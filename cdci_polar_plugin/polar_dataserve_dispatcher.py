@@ -137,8 +137,8 @@ class PolarDispatcher(object):
 
 
         print("data_server_url:", self.data_server_url)
-        print("dataserver_cache:", self.dataserver_cache)
-        print("dataserver_cache:", self.data_server_port )
+        #print("dataserver_cache:", self.dataserver_cache)
+        print("dataserver_port:", self.data_server_port )
         print('--> done')
 
 
@@ -148,7 +148,7 @@ class PolarDispatcher(object):
         self.data_server_locan_mnt_cache=None
         self.data_server_remote_cache=None
         self.dummy_cache='dummy_prods'
-        self.data_server_url= 'cdcihn.isdc.unige.ch'
+        self.data_server_url= 'http://cdcihn.isdc.unige.ch:8893'
         self.data_server_port= 8893
         self.dataserver_url = 'http://%s:%d' % (self.data_server_url, self.data_server_port)
         print ('DONE CONF',self.data_server_url)

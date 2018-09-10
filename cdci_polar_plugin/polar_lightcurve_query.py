@@ -147,7 +147,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         delta_t = instrument.get_par_by_name('time_bin')._astropy_time_delta.sec
         param_dict=self.set_instr_dictionaries(T1,T2,E1,E2,delta_t)
 
-        print ('build here',config.data_server_url)
+        #print ('build here',config.data_server_url)
         q = PolarDispatcher(config=config,param_dict=param_dict,task='api/v1.0/lightcurve')
 
         return q
