@@ -35,7 +35,7 @@ __author__ = "Andrea Tramacere"
 # relative import eg: from .mod import f
 
 
-from cdci_polar_plugin import conf_file
+from cdci_polar_plugin import conf_file,conf_dir
 
 from cdci_data_analysis.analysis.queries import  *
 from cdci_data_analysis.analysis.instrument import Instrument
@@ -62,7 +62,7 @@ def common_instr_query():
 
 
 def polar_factory():
-
+    print('--> Polar Factory')
     src_query=SourceQuery('src_query')
 
 
@@ -88,6 +88,9 @@ def polar_factory():
     query_dictionary={}
     query_dictionary['polar_lc'] = 'polar_lc_query'
     #query_dictionary['update_image'] = 'update_image'
+
+    print('--> conf_file',conf_file)
+    print('--> conf_dir', conf_dir)
 
     return  Instrument('polar',
                        data_serve_conf_file=conf_file,

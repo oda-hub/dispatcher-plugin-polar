@@ -39,6 +39,8 @@ import json
 # relative import eg: from .mod import f
 import  logging
 import  simple_logger
+from cdci_polar_plugin import conf_file as plugin_conf_file
+from cdci_data_analysis.configurer import DataServerConf
 from cdci_data_analysis.analysis.queries import  *
 from cdci_data_analysis.analysis.job_manager import  Job
 from cdci_data_analysis.analysis.io_helper import FilePath
@@ -106,31 +108,88 @@ class PolarUnknownException(PolarException):
 
 class PolarDispatcher(object):
 
-    def __init__(self,config=None,task=None,param_dict=None):
-        print('--> building class PolarDispatcher')
-        #temp = vars(config)
-        #for item in temp:
-        #    print(item, ' : ', temp[item])
+    def __init__(self,config=None,task=None,param_dict=None,instrument=None):
+        print('--> building class PolarDispatcher',instrument,config)
+
         simple_logger.log()
         simple_logger.logger.setLevel(logging.ERROR)
 
         self.task = task
 
         self.param_dict = param_dict
+
+        #print ('TEST')
+        #for k in instrument.data_server_conf_dict.keys():
+        #   print ('dict:',k,instrument.data_server_conf_dict[k ])
+
+        config = DataServerConf(data_server_url=instrument.data_server_conf_dict['data_server_url'],
+                              data_server_port=instrument.data_server_conf_dict['data_server_port'],
+                              data_server_remote_cache=instrument.data_server_conf_dict['data_server_cache'],
+                              dispatcher_mnt_point=instrument.data_server_conf_dict['dispatcher_mnt_point'],
+                              dummy_cache=instrument.data_server_conf_dict['dummy_cache'])
+        #for v in vars(config):
+        #   print('attr:', v, getattr(config, v))
+
+
+        print('--> config passed to init',config)
+
         if config is not None:
+
+            pass
+
+
+
+        elif instrument is not None and hasattr(instrument,'data_server_conf_dict'):
+
+            print('--> from data_server_conf_dict')
             try:
+                #config = DataServerConf(data_server_url=instrument.data_server_conf_dict['data_server_url'],
+                #                        data_server_port=instrument.data_server_conf_dict['data_server_port'])
 
-                self.data_server_url = config.dataserver_url
-                self.dataserver_cache = config.dataserver_cache
-                self.data_server_port = config.data_server_port
+                config = DataServerConf(data_server_url=instrument.data_server_conf_dict['data_server_url'],
+                                        data_server_port=instrument.data_server_conf_dict['data_server_port'])
+                                       # data_server_remote_cache=instrument.data_server_conf_dict['data_server_cache'],
+                                       # dispatcher_mnt_point=instrument.data_server_conf_dict['dispatcher_mnt_point'],
+                                       #s dummy_cache=instrument.data_server_conf_dict['dummy_cache'])
+
+                print('config', config)
+                for v in vars(config):
+                    print('attr:', v, getattr(config, v))
+
+
+
             except Exception as e:
-                #print(e)
+                #    #print(e)
 
-                print ("ERROR->")
+                print("ERROR->")
+                raise RuntimeError("failed to use config ", e)
+
+        elif instrument is not None:
+            try:
+                print('--> plugin_conf_file',plugin_conf_file )
+                config=instrument.from_conf_file(plugin_conf_file)
+
+            except Exception as e:
+                #    #print(e)
+
+                print("ERROR->")
                 raise RuntimeError("failed to use config ", e)
 
         else:
-            self.config()
+
+            raise PolarException(message='instrument cannot be None',debug_message='instrument se to None in PolarDispatcher __init__')
+
+        try:
+            _data_server_url = config.data_server_url
+            _data_server_port = config.data_server_port
+
+        except Exception as e:
+            #    #print(e)
+
+            print("ERROR->")
+            raise RuntimeError("failed to use config ", e)
+
+        self.config(_data_server_url,_data_server_port)
 
 
 
@@ -143,24 +202,15 @@ class PolarDispatcher(object):
 
 
 
-    def config(self):
-        self.data_server_name='polar'
-        self.data_server_locan_mnt_cache=None
-        self.data_server_remote_cache=None
-        self.dummy_cache='dummy_prods'
-        self.data_server_url= 'http://cdcihn.isdc.unige.ch:8893'
-        self.data_server_port= 8893
-        self.dataserver_url = 'http://%s:%d' % (self.data_server_url, self.data_server_port)
+    def config(self,data_server_url,data_server_port):
+
+        print('configuring method')
+        print('config done in config method')
+
+        self.data_server_url= data_server_url
+        self.data_server_port= data_server_port
+
         print ('DONE CONF',self.data_server_url)
-        #if self.data_server_local_cache is not None:
-        #    FilePath(file_dir=self.data_server_local_cache).mkdir()
-
-        #    self.dataserver_cache=os.path.join(self.data_server_remote_cache,self.data_server_local_cache)
-        #else:
-        #    self.dataserver_cache=None
-
-
-
 
     def test_communication(self, max_trial=120, sleep_s=1,logger=None):
         print('--> start test connection')
@@ -209,8 +259,8 @@ class PolarDispatcher(object):
                                 energy_max=e2,
                             ))
 
-    def _run(self,data_server_url,port,task,param_dict):
-        print ('ciccio')
+    def _run(self,data_server_url,task,param_dict):
+
         try:
             url="%s/%s"%(data_server_url,task)
             print ('url',url)
@@ -248,7 +298,7 @@ class PolarDispatcher(object):
             print('data_server_url', self.data_server_url)
             print('*** run_asynch', run_asynch)
 
-            res =self._run(self.data_server_url,self.data_server_port,task,param_dict)
+            res =self._run(self.data_server_url,task,param_dict)
             #res =self._run_test()
 
             #DONE
