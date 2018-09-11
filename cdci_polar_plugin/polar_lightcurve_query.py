@@ -180,7 +180,12 @@ class PolarLightCurveQuery(LightCurveQuery):
             # print(_html_fig[-1])
 
         query_out = QueryOutput()
+        _data={}
+        _data['time']=query_lc.data['time']
+        _data['rate']=query_lc.data['rate']
+        _data['rate_err']=query_lc.data['rate_err']
 
+        query_out.prod_dictionary['data'] = _data
         query_out.prod_dictionary['name'] = _names
         query_out.prod_dictionary['file_name'] = _lc_path
         query_out.prod_dictionary['image'] =_html_fig
