@@ -26,9 +26,21 @@ for importer, modname, ispkg in pkgutil.walk_packages(path=[pkg_dir],
 
 conf_dir=os.path.dirname(__file__)+'/config_dir'
 
-evn_phat=os.environ.get('CDCI_POLAR_PLUGIN_CONF_FILE')
-
 if conf_dir is not None:
     conf_dir=conf_dir
 
-conf_file=os.path.join(conf_dir,'data_server_conf.yml')
+
+def find_config():
+    config_file_resolution_order=[
+        os.environ.get('CDCI_POLAR_PLUGIN_CONF_FILE','.polar_data_server_conf.yml'),
+        os.path.join(conf_dir,'data_server_conf.yml'),
+        "/dispatcher/conf/conf.d/polar_data_server_conf.yml",
+    ]
+
+    for conf_file in config_file_resolution_order:
+        if conf_file is not None and os.path.exists(conf_file): # and readable?
+            return conf_file
+
+    raise RuntimeError("no polar config foundm tried: "+", ".join(config_file_resolution_order))
+
+conf_file=find_config()

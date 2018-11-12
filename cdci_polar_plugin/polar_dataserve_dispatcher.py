@@ -250,7 +250,7 @@ class PolarDispatcher(object):
 
 
     def _run_test(self,t1=1482049941, t2=1482049941+100, dt=0.1, e1=10, e2=500):
-        return requests.get("http://cdcihn.isdc.unige.ch:8893/api/v1.0/lightcurve/",
+        return requests.get("http://polar-worker:8893/api/v1.0/lightcurve/",
                             params=dict(
                                 time_start=t1,
                                 time_stop=t2,
