@@ -200,10 +200,10 @@ class PolarLightCurveQuery(LightCurveQuery):
                 #x_label='MJD-%d  (days)' % mjdref,y_label='Rate  (cts/s)'
                 _html_fig.append(query_lc.get_html_draw(x=query_lc.data.data_unit[0].data['time'],
                                                         y=query_lc.data.data_unit[0].data['rate'],
-                                                        dy=query_lc.data.data_unit[0].data['rate_err']),
+                                                        dy=query_lc.data.data_unit[0].data['rate_err'],
                                                         title='T start %s'%instrument.get_par_by_name('T1')._astropy_time.utc.value,
                                                         x_label='Time  (s)',
-                                                        y_label='Rate  (cts/s)')
+                                                        y_label='Rate  (cts/s)'))
 
             if api==True:
                 _data_list.append(query_lc.data)
