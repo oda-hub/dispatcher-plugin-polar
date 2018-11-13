@@ -113,22 +113,28 @@ class PolarLigthtCurve(LightCurveProduct):
         meta_data['src_name'] = src_name
         meta_data['time_bin'] = delta_t
 
-        df = pd.read_json(res.json()['data'])
+        res_json = res.json()
+        df = pd.read_json(res_json['data'])
 
         #NOTE np.array(df.to_records()) does not work with decoding in py27, because pandas puts the u in the dtyep name
         #NOTE works only if decoded with py36
 
-        data=np.zeros(len(df['rate']), dtype=[('rate', '<f8'), ('rate_err', '<f8'),('time', '<f8')])
-        data['rate']=df['rate']
-        data['rate_err'] = df['rate_err']
-        data['time'] = df['time']
-        npd = NumpyDataProduct(data_unit=NumpyDataUnit(data=data,
-                                                       hdu_type='table'),meta_data=meta_data)
+        
+        if res_json['status']['success']:
+            data=np.zeros(len(df['rate']), dtype=[('rate', '<f8'), ('rate_err', '<f8'),('time', '<f8')])
+            data['rate']=df['rate']
+            data['rate_err'] = df['rate_err']
+            data['time'] = df['time']
+            npd = NumpyDataProduct(data_unit=NumpyDataUnit(data=data,
+                                                           hdu_type='table'),meta_data=meta_data)
 
-        lc = cls(name=src_name, data=npd, header=None, file_name=file_name, out_dir=out_dir, prod_prefix=prod_prefix,
-                 src_name=src_name,meta_data=meta_data)
+            lc = cls(name=src_name, data=npd, header=None, file_name=file_name, out_dir=out_dir, prod_prefix=prod_prefix,
+                     src_name=src_name,meta_data=meta_data)
 
-        lc_list.append(lc)
+            lc_list.append(lc)
+        else:
+            print("result",res) # logging?
+            raise Exception(res) # handle?
 
         return lc_list
 
