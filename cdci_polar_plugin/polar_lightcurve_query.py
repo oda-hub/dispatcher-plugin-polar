@@ -53,10 +53,10 @@ from cdci_data_analysis.analysis.io_helper import FitsFile
 from cdci_data_analysis.analysis.queries import LightCurveQuery
 from cdci_data_analysis.analysis.products import LightCurveProduct,QueryProductList,QueryOutput
 from cdci_data_analysis.analysis.io_helper import FilePath
-from oda_api.data_products import NumpyDataProduct,NumpyDataUnit
+from oda_api.data_products import NumpyDataProduct,NumpyDataUnit,BinaryData
 
 from .polar_dataserve_dispatcher import PolarDispatcher
-
+from .polar_dataserve_dispatcher import  PolarAnalysisException
 
 
 class PolarLigthtCurve(LightCurveProduct):
@@ -133,8 +133,14 @@ class PolarLigthtCurve(LightCurveProduct):
 
             lc_list.append(lc)
         else:
-            print("result",res) # logging?
-            raise Exception(res) # handle?
+            #print("result",res) # logging?
+            raise PolarAnalysisException(message='polar light curve failed')
+
+
+        try:
+            open('file.root', "wb").write(BinaryData().decode(res_json['root_file_b64']))
+        except :
+            raise PolarAnalysisException(message='polar failed to open/decode root_file')
 
         return lc_list
 
