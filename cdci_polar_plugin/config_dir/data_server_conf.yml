@@ -3,5 +3,5 @@ instruments:
       dispatcher_mnt_point:
       data_server_cache:
       dummy_cache: dummy_prods
-      data_server_url: cdcihn.isdc.unige.ch
+      data_server_url: polar-worker
       data_server_port: 8893
