@@ -179,7 +179,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         param_dict=self.set_instr_dictionaries(T1,T2,E1,E2,delta_t)
 
         print ('build here',config,instrument)
-        q = PolarDispatcher(instrument=instrument,config=config,param_dict=param_dict,task='api/v1.0/lightcurve')
+        q = PolarDispatcher(instrument=instrument,config=config,param_dict=param_dict,task='api/v1.0/lightcurve/')
 
         return q
 
