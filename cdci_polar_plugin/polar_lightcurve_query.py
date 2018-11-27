@@ -209,7 +209,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         _html_fig = []
 
         _data_list=[]
-
+        _binary_data_list=[]
         for query_lc in prod_list.prod_list:
             print('->name',query_lc.name)
 
@@ -229,13 +229,13 @@ class PolarLightCurveQuery(LightCurveQuery):
 
             if api==True:
                 _data_list.append(query_lc.data)
-
+                _binary_data_list.append(BinaryData.res_json['root_file_b64'])
 
         query_out = QueryOutput()
 
         if api == True:
             query_out.prod_dictionary['numpy_data_product_list'] = _data_list
-
+            query_out.prod_dictionary['binary_data_product_list'] = _data_list
         else:
             query_out.prod_dictionary['name'] = _names
             query_out.prod_dictionary['file_name'] = _lc_path
