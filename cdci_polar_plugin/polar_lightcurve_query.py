@@ -242,7 +242,7 @@ class PolarLightCurveQuery(LightCurveQuery):
 
         if api == True:
             query_out.prod_dictionary['numpy_data_product_list'] = _data_list
-            query_out.prod_dictionary['binary_data_product_list'] = _data_list
+            query_out.prod_dictionary['binary_data_product_list'] = _binary_data_list
         else:
             query_out.prod_dictionary['name'] = _names
             query_out.prod_dictionary['file_name'] = _lc_path
