@@ -235,7 +235,8 @@ class PolarLightCurveQuery(LightCurveQuery):
                 #    lc.root_file_path = root_file_path
                 #except:
                 #    pass
-                _binary_data_list.append(BinaryData.encode(_root_path)[0])
+                _d,md=BinaryData(_root_path).encode()
+                _binary_data_list.append(_d)
 
         query_out = QueryOutput()
 
