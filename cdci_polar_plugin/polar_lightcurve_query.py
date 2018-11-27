@@ -144,6 +144,7 @@ class PolarLigthtCurve(LightCurveProduct):
         try:
             open(root_file_path.path, "wb").write(BinaryData().decode(res_json['root_file_b64']))
             lc.root_file_path=root_file_path
+            #lc.root_file_b64=res_json['root_file_b64']
         except :
             raise PolarAnalysisException(message='polar failed to open/decode root_file')
 
@@ -229,7 +230,12 @@ class PolarLightCurveQuery(LightCurveQuery):
 
             if api==True:
                 _data_list.append(query_lc.data)
-                _binary_data_list.append(BinaryData.res_json['root_file_b64'])
+                #try:
+                #    open(root_file_path.path, "wb").write(BinaryData().decode(res_json['root_file_b64']))
+                #    lc.root_file_path = root_file_path
+                #except:
+                #    pass
+                _binary_data_list.append(BinaryData.encode(_root_path)[0])
 
         query_out = QueryOutput()
 
