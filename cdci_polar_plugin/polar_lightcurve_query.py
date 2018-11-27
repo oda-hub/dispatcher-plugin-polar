@@ -215,10 +215,11 @@ class PolarLightCurveQuery(LightCurveQuery):
             print('->name',query_lc.name)
 
             query_lc.write()
+            _root_path.append(str(query_lc.root_file_path.name))
             if api == False:
                 _names.append(query_lc.name)
                 _lc_path.append(str(query_lc.file_path.name))
-                _root_path.append(str(query_lc.root_file_path.name))
+
                 print ('_root_path',_root_path)
                 #x_label='MJD-%d  (days)' % mjdref,y_label='Rate  (cts/s)'
                 _html_fig.append(query_lc.get_html_draw(x=query_lc.data.data_unit[0].data['time'],
