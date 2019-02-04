@@ -161,10 +161,10 @@ class PolarLightCurveQuery(LightCurveQuery):
         super(PolarLightCurveQuery, self).__init__(name)
 
     def build_product_list(self, instrument, res, out_dir, prod_prefix='polar_lc',api=False):
-        src_name = instrument.get_par_by_name('src_name').value
+
         delta_t = instrument.get_par_by_name('time_bin')._astropy_time_delta.sec
         prod_list = PolarLigthtCurve.build_from_res(res,
-                                                      src_name=src_name,
+                                                      src_name='lc',
                                                       prod_prefix=prod_prefix,
                                                       out_dir=out_dir,
                                                       delta_t=delta_t)
