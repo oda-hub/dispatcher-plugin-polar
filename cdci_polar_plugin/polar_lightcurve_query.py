@@ -75,7 +75,7 @@ class DummyPolarRes(object):
         _js['data']['rate_err'] = lc.data['rate_err']
         _js['data']['time'] = lc.data['time']
 
-        return json.dums(_js)
+        return json.dumps(_js)
 
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
