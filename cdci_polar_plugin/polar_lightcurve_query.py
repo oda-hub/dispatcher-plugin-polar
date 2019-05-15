@@ -72,7 +72,9 @@ class DummyPolarRes(object):
         data['rate_err'] = lc.data['rate_err'].tolist()
         data['time'] = lc.data['time'].tolist()
         data = json.dumps(data)
-
+        _d = dict(data=data)
+        _d['status'] = dict(success=True)
+        _d['status']['exceptions']=[None]
         return dict(data=data)
 
 class PolarLigthtCurve(LightCurveProduct):
