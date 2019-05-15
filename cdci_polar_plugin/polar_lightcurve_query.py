@@ -75,7 +75,7 @@ class DummyPolarRes(object):
         _d = dict(data=data)
         _d['status'] = dict(success=True)
         _d['status']['exceptions']=[None]
-        return dict(data=data)
+        return _d
 
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
