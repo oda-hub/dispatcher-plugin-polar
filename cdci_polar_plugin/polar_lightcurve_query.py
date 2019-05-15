@@ -68,14 +68,12 @@ class DummyPolarRes(object):
         data = NumpyDataProduct.from_fits_file(self.dummy_lc)
         lc = data.get_data_unit_by_name('POLAR_LC')
 
-        _js = {}
+        data = dict(rate=lc.data['rate'].tolist())
+        data['rate_err'] = lc.data['rate_err'].tolist()
+        data['time'] = lc.data['time'].tolist()
+        data = json.dumps(data)
 
-        _js['data'] = {}
-        _js['data']['rate'] = lc.data['rate'].tolist()
-        _js['data']['rate_err'] = lc.data['rate_err'].tolist()
-        _js['data']['time'] = lc.data['time'].tolist()
-
-        return json.dumps(_js,ensure_ascii=True)
+        return dict(data=data)
 
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
@@ -132,8 +130,8 @@ class PolarLigthtCurve(LightCurveProduct):
         meta_data['time_bin'] = delta_t
 
         res_json = res.json()
-        print(res_json)
-        print(type(res_json))
+        #print(res_json)
+        #print(type(res_json))
         df = pd.read_json(res_json['data'])
 
         root_file_path= prod_prefix + '_' + src_name+'.root'
