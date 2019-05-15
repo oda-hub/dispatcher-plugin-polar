@@ -59,6 +59,11 @@ from .polar_dataserve_dispatcher import PolarDispatcher
 from .polar_dataserve_dispatcher import  PolarAnalysisException
 
 
+class DummyPolarRes(object):
+
+    def __init__(self):
+        pass
+
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
 
@@ -186,7 +191,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         delta_t = instrument.get_par_by_name('time_bin')._astropy_time_delta.sec
         param_dict=self.set_instr_dictionaries(T1,T2,E1,E2,delta_t)
 
-        print ('build here',config,instrument)
+        #print ('build here',config,instrument)
         q = PolarDispatcher(instrument=instrument,config=config,param_dict=param_dict,task='api/v1.0/lightcurve/')
 
         return q
@@ -256,28 +261,28 @@ class PolarLightCurveQuery(LightCurveQuery):
 
         return query_out
 
-    def get_dummy_products(self, instrument, config, out_dir='./'):
-        raise RuntimeError('method to implement')
+    def get_dummy_products(self, instrument, config, out_dir='./',prod_prefix=None):
 
-        # src_name = instrument.get_par_by_name('src_name').value
+        meta_data = {'product': 'light_curve', 'instrument': 'isgri', 'src_name': ''}
+        meta_data['query_parameters'] = self.get_parameters_list_as_json()
+
+        dummy_cache = config.dummy_cache
+
+        res = DummyPolarRes()
+        res.__setattr__('dummy_src', 'dummy_src')
+        res.__setattr__('dummy_lc', '%s/polar_query_lc.fits' % dummy_cache)
+        res.__setattr__('extracted_sources', [('dummy_src', 'dummy_lc')])
+
+        prod_list=PolarLigthtCurve.build_from_res(res,
+                                        src_name='lc',
+                                        prod_prefix=prod_prefix,
+                                        out_dir=out_dir,)
+
+
+
+        prod_list = QueryProductList(prod_list=prod_list)
         #
-        # dummy_cache = config.dummy_cache
-        # delta_t = instrument.get_par_by_name('time_bin')._astropy_time_delta.sec
-        # print('delta_t is sec', delta_t)
-        # query_lc = LightCurveProduct.from_fits_file(inf_file='%s/query_lc.fits' % dummy_cache,
-        #                                             out_file_name='query_lc.fits',
-        #                                             prod_name='isgri_lc',
-        #                                             ext=1,
-        #                                             file_dir=out_dir)
-        # print('name', query_lc.header['NAME'])
-        # query_lc.name=query_lc.header['NAME']
-        # #if src_name is not None:
-        # #    if query_lc.header['NAME'] != src_name:
-        # #        query_lc.data = None
-        #
-        # prod_list = QueryProductList(prod_list=[query_lc])
-        #
-        # return prod_list
+        return prod_list
 
 
 
