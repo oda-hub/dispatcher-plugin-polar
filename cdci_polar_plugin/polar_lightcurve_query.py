@@ -132,6 +132,8 @@ class PolarLigthtCurve(LightCurveProduct):
         meta_data['time_bin'] = delta_t
 
         res_json = res.json()
+        print(res_json)
+        print(type(res_json))
         df = pd.read_json(res_json['data'])
 
         root_file_path= prod_prefix + '_' + src_name+'.root'
