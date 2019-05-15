@@ -64,14 +64,19 @@ class DummyPolarRes(object):
     def __init__(self):
         pass
     def json(self):
-        data=NumpyDataProduct.from_fits_file(self.dummy_lc)
-        lc=data.get_data_unit_by_name('POLAR_LC')
-        _js={}
-        _js['rate']=lc.data['rate']
-        _js['rate_err'] = lc.data['rate_err']
-        _js['time'] = lc.data['time']
-        return  _js
-    
+
+        data = NumpyDataProduct.from_fits_file(self.dummy_lc)
+        lc = data.get_data_unit_by_name('POLAR_LC')
+
+        _js = {}
+
+        _js['data'] = {}
+        _js['data']['rate']=lc.data['rate']
+        _js['data']['rate_err'] = lc.data['rate_err']
+        _js['data']['time'] = lc.data['time']
+
+        return _js
+
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
 
