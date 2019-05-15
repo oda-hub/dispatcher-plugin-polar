@@ -262,7 +262,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         return query_out
 
     def get_dummy_products(self, instrument, config, out_dir='./',prod_prefix=None,api=False):
-
+        print('config',config)
         meta_data = {'product': 'light_curve', 'instrument': 'isgri', 'src_name': ''}
         meta_data['query_parameters'] = self.get_parameters_list_as_json()
 
