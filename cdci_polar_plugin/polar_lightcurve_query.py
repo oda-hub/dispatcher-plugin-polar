@@ -71,11 +71,11 @@ class DummyPolarRes(object):
         _js = {}
 
         _js['data'] = {}
-        _js['data']['rate']=lc.data['rate'].tolist()
+        _js['data']['rate'] = lc.data['rate'].tolist()
         _js['data']['rate_err'] = lc.data['rate_err'].tolist()
         _js['data']['time'] = lc.data['time'].tolist()
 
-        return json.dumps(_js)
+        return json.dumps(_js,ensure_ascii=True)
 
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
