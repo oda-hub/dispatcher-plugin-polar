@@ -75,6 +75,7 @@ class DummyPolarRes(object):
         _d = dict(data=data)
         _d['status'] = dict(success=True)
         _d['status']['exceptions']=[None]
+        _d['root_file_b64']=self.dummy_root
         return _d
 
 class PolarLigthtCurve(LightCurveProduct):
@@ -106,7 +107,8 @@ class PolarLigthtCurve(LightCurveProduct):
                              src_name='',
                              prod_prefix='polar_lc',
                              out_dir=None,
-                             delta_t=None):
+                             delta_t=None,
+                             skip_root=False):
 
 
 
@@ -161,12 +163,13 @@ class PolarLigthtCurve(LightCurveProduct):
             raise PolarAnalysisException(message='polar light curve failed: %s'%_d['comment'],debug_message=_d['kind'])
 
 
-        try:
-            open(root_file_path.path, "wb").write(BinaryData().decode(res_json['root_file_b64']))
-            lc.root_file_path=root_file_path
-            #lc.root_file_b64=res_json['root_file_b64']
-        except :
-            raise PolarAnalysisException(message='polar failed to open/decode root_file')
+        if skip_root is False:
+            try:
+                open(root_file_path.path, "wb").write(BinaryData().decode(res_json['root_file_b64']))
+                lc.root_file_path=root_file_path
+                #lc.root_file_b64=res_json['root_file_b64']
+            except :
+                raise PolarAnalysisException(message='polar failed to open/decode root_file')
 
         lc_list.append(lc)
 
@@ -286,6 +289,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         res = DummyPolarRes()
         res.__setattr__('dummy_src', 'dummy_src')
         res.__setattr__('dummy_lc', '%s/polar_query_lc.fits' % dummy_cache)
+        res.__setattr__('dummy_root', '%s/polar_query_lc.root' % dummy_cache)
         res.__setattr__('extracted_sources', [('dummy_src', 'dummy_lc')])
 
         prod_list=PolarLigthtCurve.build_from_res(res,
