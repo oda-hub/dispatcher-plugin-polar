@@ -128,7 +128,7 @@ class PolarLigthtCurve(LightCurveProduct):
             data['rate_err'] = df['rate_err']
             data['time'] = df['time']
             npd = NumpyDataProduct(data_unit=NumpyDataUnit(data=data,
-                                                           hdu_type='table'),meta_data=meta_data)
+                                                           hdu_type='bin_table',name='POLAR_LC'),meta_data=meta_data)
 
             lc = cls(name=src_name, data=npd, header=None, file_name=file_name, out_dir=out_dir, prod_prefix=prod_prefix,
                      src_name=src_name,meta_data=meta_data)
