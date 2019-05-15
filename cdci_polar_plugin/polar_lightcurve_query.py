@@ -171,6 +171,8 @@ class PolarLigthtCurve(LightCurveProduct):
             except Exception as e:
                 print(e)
                 raise PolarAnalysisException(message='polar failed to open/decode root_file')
+        else:
+            lc.root_file_path=None
 
         lc_list.append(lc)
 
@@ -243,8 +245,9 @@ class PolarLightCurveQuery(LightCurveQuery):
             if api == False:
                 _names.append(query_lc.name)
                 _lc_path.append(str(query_lc.file_path.name))
-                _root_path.append(str(query_lc.root_file_path.name))
-                print ('_root_path',_root_path)
+                if query_lc.root_file_path is not None:
+                    _root_path.append(str(query_lc.root_file_path.name))
+                #print ('_root_path',_root_path)
                 #x_label='MJD-%d  (days)' % mjdref,y_label='Rate  (cts/s)'
                 _html_fig.append(query_lc.get_html_draw(x=query_lc.data.data_unit[1].data['time'],
                                                         y=query_lc.data.data_unit[1].data['rate'],
@@ -260,8 +263,9 @@ class PolarLightCurveQuery(LightCurveQuery):
                 #    lc.root_file_path = root_file_path
                 #except:
                 #    pass
-                _d,md=BinaryData(str(query_lc.root_file_path)).encode()
-                _binary_data_list.append(_d)
+                if query_lc.root_file_path is not None:
+                    _d,md=BinaryData(str(query_lc.root_file_path)).encode()
+                    _binary_data_list.append(_d)
 
         query_out = QueryOutput()
 
@@ -296,7 +300,8 @@ class PolarLightCurveQuery(LightCurveQuery):
         prod_list=PolarLigthtCurve.build_from_res(res,
                                         src_name='lc',
                                         prod_prefix=prod_prefix,
-                                        out_dir=out_dir,)
+                                        out_dir=out_dir,
+                                        skip_root=True)
 
 
 
