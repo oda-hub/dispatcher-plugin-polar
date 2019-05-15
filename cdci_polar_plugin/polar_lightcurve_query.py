@@ -71,9 +71,9 @@ class DummyPolarRes(object):
         _js = {}
 
         _js['data'] = {}
-        _js['data']['rate']=lc.data['rate']
-        _js['data']['rate_err'] = lc.data['rate_err']
-        _js['data']['time'] = lc.data['time']
+        _js['data']['rate']=lc.data['rate'].tolist()
+        _js['data']['rate_err'] = lc.data['rate_err'].tolist()
+        _js['data']['time'] = lc.data['time'].tolist()
 
         return json.dumps(_js)
 
