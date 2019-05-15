@@ -45,7 +45,7 @@ import ddosaclient as dc
 import  numpy as np
 import pandas as pd
 from astropy.table import Table
-
+import  json
 from pathlib import Path
 
 from astropy.io import fits as pf
@@ -75,7 +75,7 @@ class DummyPolarRes(object):
         _js['data']['rate_err'] = lc.data['rate_err']
         _js['data']['time'] = lc.data['time']
 
-        return _js
+        return json.dums(_js)
 
 class PolarLigthtCurve(LightCurveProduct):
     def __init__(self,name,file_name,data,header,prod_prefix=None,out_dir=None,src_name=None,meta_data={}):
