@@ -158,10 +158,10 @@ class PolarLigthtCurve(LightCurveProduct):
 
 
         else:
-            #print("result",res) # logging?
-            _d=res_json['status']['exceptions'][0]
-            print('_d',_d)
-            raise PolarAnalysisException(message='polar light curve failed: %s'%_d['comment'],debug_message=_d['kind'])
+            print("result",res) # logging?
+            _d=res_json['status']
+            print('remote problem',_d)
+            raise PolarAnalysisException(message='polar light curve failed: %s'%_d,debug_message=_d['kind'])
 
 
         if skip_root is False:
