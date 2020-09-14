@@ -72,7 +72,7 @@ def polar_factory():
     instr_query=InstrumentQuery(
         name='polar_parameters',
         extra_parameters_list=instr_query_pars,
-        input_prod_list_name=[],
+        input_prod_list_name=None,
         input_prod_value=None,
         catalog=None,
         catalog_name='user_catalog')
