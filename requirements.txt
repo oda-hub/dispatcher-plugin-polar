@@ -1,3 +1,3 @@
-cdci_data_analysis
+-e git+https://github.com/oda-hub/dispatcher-app.git@parameters-default-format#egg=cdci_data_analysis[test]
 pandas
 astropy
