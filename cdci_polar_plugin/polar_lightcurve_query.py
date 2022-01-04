@@ -39,14 +39,10 @@ import os
 
 # Project
 # relative import eg: from .mod import f
-import  numpy as np
+import numpy as np
 import pandas as pd
-from astropy.table import Table
-import  json
-from pathlib import Path
+import json
 
-from astropy.io import fits as pf
-from cdci_data_analysis.analysis.io_helper import FitsFile
 from cdci_data_analysis.analysis.queries import LightCurveQuery
 from cdci_data_analysis.analysis.products import LightCurveProduct,QueryProductList,QueryOutput
 from cdci_data_analysis.analysis.io_helper import FilePath
