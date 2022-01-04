@@ -28,12 +28,10 @@ __author__ = "Andrea Tramacere"
 # Standard library
 # eg copy
 # absolute import rg:from copy import deepcopy
-import  ast
 import requests
 # Dependencies
 # eg numpy 
 # absolute import eg: import numpy as np
-import json
 
 # Project
 # relative import eg: from .mod import f
