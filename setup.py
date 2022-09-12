@@ -1,5 +1,5 @@
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, logging.info_function
 
 from builtins import (bytes, str, open, super, range,
                       zip, round, input, int, pow, object, map, zip)
@@ -23,7 +23,7 @@ f.close()
 
 packs=find_packages()
 
-print ('packs',packs)
+logging.info ('packs',packs)
 
 
 

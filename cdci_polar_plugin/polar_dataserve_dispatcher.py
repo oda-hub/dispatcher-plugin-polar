@@ -18,7 +18,7 @@ Module API
 ----------
 """
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, logging.info_function
 
 from builtins import (bytes, str, open, super, range,
                       zip, round, input, int, pow, object, map, zip)
@@ -35,8 +35,7 @@ import requests
 
 # Project
 # relative import eg: from .mod import f
-import  logging
-import  simple_logger
+import logging
 from cdci_polar_plugin import conf_file as plugin_conf_file
 from cdci_data_analysis.configurer import DataServerConf
 from cdci_data_analysis.analysis.queries import  *
@@ -62,7 +61,7 @@ from contextlib import contextmanager
 #
 #
 # def redirect_out(path):
-#     #print "Redirecting stdout"
+#     #logging.info "Redirecting stdout"
 #     sys.stdout.flush() # <--- important when redirecting to files
 #     newstdout = os.dup(1)
 #     devnull = os.open('%s/SED.log'%path, os.O_CREAT)
@@ -72,7 +71,7 @@ from contextlib import contextmanager
 
 #def view_traceback():
 #    ex_type, ex, tb = sys.exc_info()
-#    traceback.print_tb(tb)
+#    traceback.logging.info_tb(tb)
 #    del tb
 
 
@@ -107,18 +106,15 @@ class PolarUnknownException(PolarException):
 class PolarDispatcher(object):
 
     def __init__(self,config=None,task=None,param_dict=None,instrument=None):
-        print('--> building class PolarDispatcher',instrument,config)
-
-        simple_logger.log()
-        simple_logger.logger.setLevel(logging.ERROR)
+        logging.info('--> building class PolarDispatcher',instrument,config)
 
         self.task = task
 
         self.param_dict = param_dict
 
-        #print ('TEST')
+        #logging.info ('TEST')
         #for k in instrument.data_server_conf_dict.keys():
-        #   print ('dict:',k,instrument.data_server_conf_dict[k ])
+        #   logging.info ('dict:',k,instrument.data_server_conf_dict[k ])
 
         config = DataServerConf(data_server_url=instrument.data_server_conf_dict['data_server_url'],
                               data_server_port=instrument.data_server_conf_dict['data_server_port'],
@@ -126,10 +122,10 @@ class PolarDispatcher(object):
                               dispatcher_mnt_point=instrument.data_server_conf_dict['dispatcher_mnt_point'],
                               dummy_cache=instrument.data_server_conf_dict['dummy_cache'])
         #for v in vars(config):
-        #   print('attr:', v, getattr(config, v))
+        #   logging.info('attr:', v, getattr(config, v))
 
 
-        print('--> config passed to init',config)
+        logging.info('--> config passed to init',config)
 
         if config is not None:
 
@@ -139,7 +135,7 @@ class PolarDispatcher(object):
 
         elif instrument is not None and hasattr(instrument,'data_server_conf_dict'):
 
-            print('--> from data_server_conf_dict')
+            logging.info('--> from data_server_conf_dict')
             try:
                 #config = DataServerConf(data_server_url=instrument.data_server_conf_dict['data_server_url'],
                 #                        data_server_port=instrument.data_server_conf_dict['data_server_port'])
@@ -150,27 +146,27 @@ class PolarDispatcher(object):
                                        # dispatcher_mnt_point=instrument.data_server_conf_dict['dispatcher_mnt_point'],
                                        #s dummy_cache=instrument.data_server_conf_dict['dummy_cache'])
 
-                print('config', config)
+                logging.info('config', config)
                 for v in vars(config):
-                    print('attr:', v, getattr(config, v))
+                    logging.info('attr:', v, getattr(config, v))
 
 
 
             except Exception as e:
-                #    #print(e)
+                #    #logging.info(e)
 
-                print("ERROR->")
+                logging.info("ERROR->")
                 raise RuntimeError("failed to use config ", e)
 
         elif instrument is not None:
             try:
-                print('--> plugin_conf_file',plugin_conf_file )
+                logging.info('--> plugin_conf_file',plugin_conf_file )
                 config=instrument.from_conf_file(plugin_conf_file)
 
             except Exception as e:
-                #    #print(e)
+                #    #logging.info(e)
 
-                print("ERROR->")
+                logging.info("ERROR->")
                 raise RuntimeError("failed to use config ", e)
 
         else:
@@ -182,9 +178,9 @@ class PolarDispatcher(object):
             _data_server_port = config.data_server_port
 
         except Exception as e:
-            #    #print(e)
+            #    #logging.info(e)
 
-            print("ERROR->")
+            logging.info("ERROR->")
             raise RuntimeError("failed to use config ", e)
 
         self.config(_data_server_url,_data_server_port)
@@ -193,25 +189,25 @@ class PolarDispatcher(object):
 
 
 
-        print("data_server_url:", self.data_server_url)
-        #print("dataserver_cache:", self.dataserver_cache)
-        print("dataserver_port:", self.data_server_port )
-        print('--> done')
+        logging.info("data_server_url:", self.data_server_url)
+        #logging.info("dataserver_cache:", self.dataserver_cache)
+        logging.info("dataserver_port:", self.data_server_port )
+        logging.info('--> done')
 
 
 
     def config(self,data_server_url,data_server_port):
 
-        print('configuring method')
-        print('config done in config method')
+        logging.info('configuring method')
+        logging.info('config done in config method')
 
         self.data_server_url= data_server_url
         self.data_server_port= data_server_port
 
-        print ('DONE CONF',self.data_server_url)
+        logging.info ('DONE CONF',self.data_server_url)
 
     def test_communication(self, max_trial=120, sleep_s=1,logger=None):
-        print('--> start test connection')
+        logging.info('--> start test connection')
 
         query_out = QueryOutput()
 
@@ -225,7 +221,7 @@ class PolarDispatcher(object):
         query_out.set_done(message='connection OK', debug_message=str(debug_message))
 
 
-        print('--> end test busy')
+        logging.info('--> end test busy')
 
         return query_out
 
@@ -261,7 +257,7 @@ class PolarDispatcher(object):
 
         try:
             url="%s/%s"%(data_server_url,task)
-            print ('url',url)
+            logging.info ('url',url)
             res = requests.get("%s" % (url),params=param_dict)
         except Exception as e:
 
@@ -288,13 +284,10 @@ class PolarDispatcher(object):
 
         try:
 
-            simple_logger.logger.setLevel(logging.ERROR)
-
-
-            print('--Polar disp1--')
-            print('call_back_url',call_back_url)
-            print('data_server_url', self.data_server_url)
-            print('*** run_asynch', run_asynch)
+            logging.info('--Polar disp1--')
+            logging.info('call_back_url',call_back_url)
+            logging.info('data_server_url', self.data_server_url)
+            logging.info('*** run_asynch', run_asynch)
 
             res =self._run(self.data_server_url,task,param_dict)
             #res =self._run_test()

@@ -18,7 +18,7 @@ Module API
 ----------
 """
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, logging.info_function
 
 
 __author__ = "Andrea Tramacere"
@@ -62,7 +62,7 @@ def common_instr_query():
 
 
 def polar_factory():
-    print('--> Polar Factory')
+    logging.info('--> Polar Factory')
     src_query=SourceQuery('src_query')
 
 
@@ -89,8 +89,8 @@ def polar_factory():
     query_dictionary['polar_lc'] = 'polar_lc_query'
     #query_dictionary['update_image'] = 'update_image'
 
-    print('--> conf_file',conf_file)
-    print('--> conf_dir', conf_dir)
+    logging.info('--> conf_file',conf_file)
+    logging.info('--> conf_dir', conf_dir)
 
     return  Instrument('polar',
                        asynch=False,

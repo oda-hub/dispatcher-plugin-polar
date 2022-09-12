@@ -18,7 +18,7 @@ Module API
 ----------
 """
 
-from __future__ import absolute_import, division, print_function
+from __future__ import absolute_import, division, logging.info_function
 
 from builtins import (bytes, str, open, super, range,
                       zip, round, input, int, pow, object, map, zip)
@@ -121,15 +121,15 @@ class PolarLigthtCurve(LightCurveProduct):
 
 
         file_name =  src_name+'.fits'
-        print ('file name',file_name)
+        logging.info ('file name',file_name)
 
         meta_data={}
         meta_data['src_name'] = src_name
         meta_data['time_bin'] = delta_t
 
         res_json = res.json()
-        #print(res_json)
-        #print(type(res_json))
+        #logging.info(res_json)
+        #logging.info(type(res_json))
         df = pd.read_json(res_json['data'])
 
         root_file_path= prod_prefix + '_' + src_name+'.root'
@@ -151,9 +151,9 @@ class PolarLigthtCurve(LightCurveProduct):
 
 
         else:
-            print("result",res) # logging?
+            logging.info("result",res) # logging?
             _d=res_json['status']
-            print('remote problem',_d)
+            logging.info('remote problem',_d)
             raise PolarAnalysisException(message='polar light curve failed: %s'%_d,debug_message=_d['kind'])
 
 
@@ -163,7 +163,7 @@ class PolarLigthtCurve(LightCurveProduct):
                 lc.root_file_path=root_file_path
                 #lc.root_file_b64=res_json['root_file_b64']
             except Exception as e:
-                print(e)
+                logging.info(e)
                 raise PolarAnalysisException(message='polar failed to open/decode root_file')
         else:
             lc.root_file_path=None
@@ -189,7 +189,7 @@ class PolarLightCurveQuery(LightCurveQuery):
                                                       out_dir=out_dir,
                                                       delta_t=delta_t)
 
-        # print('spectrum_list',spectrum_list)
+        # logging.info('spectrum_list',spectrum_list)
 
         return prod_list
 
@@ -206,7 +206,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         delta_t = instrument.get_par_by_name('time_bin')._astropy_time_delta.sec
         param_dict=self.set_instr_dictionaries(T1,T2,E1,E2,delta_t)
 
-        #print ('build here',config,instrument)
+        #logging.info ('build here',config,instrument)
         q = PolarDispatcher(instrument=instrument,config=config,param_dict=param_dict,task='api/v1.0/lightcurve/')
 
         return q
@@ -232,7 +232,7 @@ class PolarLightCurveQuery(LightCurveQuery):
         _data_list=[]
         _binary_data_list=[]
         for query_lc in prod_list.prod_list:
-            #print('->name',query_lc.name)
+            #logging.info('->name',query_lc.name)
             query_lc.add_url_to_fits_file(instrument._current_par_dic, url=instrument.disp_conf.products_url)
             query_lc.write()
 
@@ -241,7 +241,7 @@ class PolarLightCurveQuery(LightCurveQuery):
                 _lc_path.append(str(query_lc.file_path.name))
                 if query_lc.root_file_path is not None:
                     _root_path.append(str(query_lc.root_file_path.name))
-                #print ('_root_path',_root_path)
+                #logging.info ('_root_path',_root_path)
                 #x_label='MJD-%d  (days)' % mjdref,y_label='Rate  (cts/s)'
                 _html_fig.append(query_lc.get_html_draw(x=query_lc.data.data_unit[1].data['time'],
                                                         y=query_lc.data.data_unit[1].data['rate'],
@@ -284,7 +284,7 @@ class PolarLightCurveQuery(LightCurveQuery):
                                 data_server_remote_cache=instrument.data_server_conf_dict['data_server_cache'],
                                 dispatcher_mnt_point=instrument.data_server_conf_dict['dispatcher_mnt_point'],
                                 dummy_cache=instrument.data_server_conf_dict['dummy_cache'])
-        #print('config',config)
+        #logging.info('config',config)
         meta_data = {'product': 'light_curve', 'instrument': 'isgri', 'src_name': ''}
         meta_data['query_parameters'] = self.get_parameters_list_as_json()
 
