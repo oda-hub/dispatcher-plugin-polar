@@ -1,13 +1,4 @@
-
-from __future__ import absolute_import, division, logging.info_function
-
-from builtins import (bytes, str, open, super, range,
-                      zip, round, input, int, pow, object, map, zip)
-
 __author__ = 'andrea tramacere'
-
-
-
 
 #!/usr/bin/env python
 
@@ -22,11 +13,6 @@ f.close()
 
 
 packs=find_packages()
-
-logging.info ('packs',packs)
-
-
-
 
 include_package_data=True
 

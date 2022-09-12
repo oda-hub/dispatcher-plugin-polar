@@ -18,8 +18,6 @@ Module API
 ----------
 """
 
-from __future__ import absolute_import, division, logging.info_function
-
 
 __author__ = "Andrea Tramacere"
 

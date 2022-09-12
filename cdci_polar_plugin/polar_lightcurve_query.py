@@ -18,27 +18,9 @@ Module API
 ----------
 """
 
-from __future__ import absolute_import, division, logging.info_function
-
-from builtins import (bytes, str, open, super, range,
-                      zip, round, input, int, pow, object, map, zip)
-
 __author__ = "Andrea Tramacere"
 
-# Standard library
-# eg copy
-# absolute import rg:from copy import deepcopy
-import os
-
-# Dependencies
-# eg numpy
-# absolute import eg: import numpy as np
-
-# Project
-# relative import eg: from .mod import f
-
-# Project
-# relative import eg: from .mod import f
+import logging
 import numpy as np
 import pandas as pd
 import json
@@ -121,7 +103,7 @@ class PolarLigthtCurve(LightCurveProduct):
 
 
         file_name =  src_name+'.fits'
-        logging.info ('file name',file_name)
+        logging.info('file name',file_name)
 
         meta_data={}
         meta_data['src_name'] = src_name
