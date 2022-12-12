@@ -87,8 +87,8 @@ def polar_factory():
     query_dictionary['polar_lc'] = 'polar_lc_query'
     #query_dictionary['update_image'] = 'update_image'
 
-    logging.info('--> conf_file',conf_file)
-    logging.info('--> conf_dir', conf_dir)
+    logging.info('--> conf_file %s',conf_file)
+    logging.info('--> conf_dir %s', conf_dir)
 
     return  Instrument('polar',
                        asynch=False,

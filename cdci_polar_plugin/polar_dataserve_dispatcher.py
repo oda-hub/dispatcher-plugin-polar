@@ -101,7 +101,7 @@ class PolarUnknownException(PolarException):
 class PolarDispatcher(object):
 
     def __init__(self,config=None,task=None,param_dict=None,instrument=None):
-        logging.info('--> building class PolarDispatcher',instrument,config)
+        logging.info('--> building class PolarDispatcher %s %s',instrument,config)
 
         self.task = task
 
@@ -120,7 +120,7 @@ class PolarDispatcher(object):
         #   logging.info('attr:', v, getattr(config, v))
 
 
-        logging.info('--> config passed to init',config)
+        logging.info('--> config passed to init %s',config)
 
         if config is not None:
 
@@ -141,9 +141,9 @@ class PolarDispatcher(object):
                                        # dispatcher_mnt_point=instrument.data_server_conf_dict['dispatcher_mnt_point'],
                                        #s dummy_cache=instrument.data_server_conf_dict['dummy_cache'])
 
-                logging.info('config', config)
+                logging.info('config %s', config)
                 for v in vars(config):
-                    logging.info('attr:', v, getattr(config, v))
+                    logging.info('attr: %s %s', v, getattr(config, v))
 
 
 
@@ -151,18 +151,18 @@ class PolarDispatcher(object):
                 #    #logging.info(e)
 
                 logging.info("ERROR->")
-                raise RuntimeError("failed to use config ", e)
+                raise RuntimeError("failed to use config", e)
 
         elif instrument is not None:
             try:
-                logging.info('--> plugin_conf_file',plugin_conf_file )
+                logging.info('--> plugin_conf_file %s', plugin_conf_file )
                 config=instrument.from_conf_file(plugin_conf_file)
 
             except Exception as e:
                 #    #logging.info(e)
 
                 logging.info("ERROR->")
-                raise RuntimeError("failed to use config ", e)
+                raise RuntimeError("failed to use config", e)
 
         else:
 
@@ -184,9 +184,9 @@ class PolarDispatcher(object):
 
 
 
-        logging.info("data_server_url:", self.data_server_url)
+        logging.info("data_server_url: %s", self.data_server_url)
         #logging.info("dataserver_cache:", self.dataserver_cache)
-        logging.info("dataserver_port:", self.data_server_port )
+        logging.info("dataserver_port: %s", self.data_server_port )
         logging.info('--> done')
 
 
@@ -199,7 +199,7 @@ class PolarDispatcher(object):
         self.data_server_url= data_server_url
         self.data_server_port= data_server_port
 
-        logging.info ('DONE CONF',self.data_server_url)
+        logging.info ('DONE CONF %s',self.data_server_url)
 
     def test_communication(self, max_trial=120, sleep_s=1,logger=None):
         logging.info('--> start test connection')
@@ -252,7 +252,7 @@ class PolarDispatcher(object):
 
         try:
             url="%s/%s"%(data_server_url,task)
-            logging.info ('url',url)
+            logging.info ('url %s', url)
             res = requests.get("%s" % (url),params=param_dict)
         except Exception as e:
 
@@ -280,9 +280,9 @@ class PolarDispatcher(object):
         try:
 
             logging.info('--Polar disp1--')
-            logging.info('call_back_url',call_back_url)
-            logging.info('data_server_url', self.data_server_url)
-            logging.info('*** run_asynch', run_asynch)
+            logging.info('call_back_url %s',call_back_url)
+            logging.info('data_server_url %s', self.data_server_url)
+            logging.info('*** run_asynch %s', run_asynch)
 
             res =self._run(self.data_server_url,task,param_dict)
             #res =self._run_test()
