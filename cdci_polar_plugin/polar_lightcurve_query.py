@@ -136,7 +136,15 @@ class PolarLigthtCurve(LightCurveProduct):
             logging.info("result",res) # logging?
             _d=res_json['status']
             logging.info('remote problem',_d)
-            raise PolarAnalysisException(message='polar light curve failed: %s'%_d,debug_message=_d['kind'])
+            message = 'remote problem'
+            if 'kind' in _d:
+                message = _d['kind']
+            elif 'exceptions' in _d:
+                if _d['exceptions'][0]['kind'] is not None:
+                    message = _d['exceptions'][0]['kind']
+                if _d['exceptions'][0]['comment'] is not None:
+                    message += ': ' + _d['exceptions'][0]['comment']
+            raise PolarAnalysisException(message='polar light curve failed: %s'%_d, debug_message=message)
 
 
         if skip_root is False:
