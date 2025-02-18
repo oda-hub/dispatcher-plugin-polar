@@ -233,7 +233,8 @@ class PolarLightCurveQuery(LightCurveQuery):
                     _root_path.append(str(query_lc.root_file_path.name))
                 #logging.info ('_root_path',_root_path)
                 #x_label='MJD-%d  (days)' % mjdref,y_label='Rate  (cts/s)'
-                dx = np.zeros(query_lc.data.data_unit[1].data['time'])
+                dx = (query_lc.data.data_unit[1].data['time'][1:] - query_lc.data.data_unit[1].data['time'][0:-1]) / 2
+                dx = np.pad(dx, (0, 1), 'edge')
                 _html_fig.append(query_lc.get_html_draw(x=query_lc.data.data_unit[1].data['time'],
                                                         y=query_lc.data.data_unit[1].data['rate'],
                                                         dy=query_lc.data.data_unit[1].data['rate_err'],
